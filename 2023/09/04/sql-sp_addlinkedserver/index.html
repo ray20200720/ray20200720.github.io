@@ -1,0 +1,72 @@
+<!DOCTYPE html><html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="今天遇到一個很常見的SQL Server問題,順利解決了.記錄一下:"><link rel="stylesheet" type="text/css" href="/css/normalize.css"><link rel="stylesheet" type="text/css" href="/css/highlight.css"><link rel="stylesheet" type="text/css" href="/css/noise.css"><title>sql 連線問題 | ITHelp</title><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><meta name="generator" content="Hexo 6.3.0"></head><body><article class="wrapper"><div class="post-main"><div class="nav"><nav class="container"><a class="sidebar-nav-item active" href="/">Home</a><a class="sidebar-nav-item" href="/archives">Archives</a></nav><div class="container post-meta"><div class="post-time">2023-09-04</div></div></div><div class="container post-header"><h1>sql 連線問題</h1></div><div class="container post-content"><p>今天遇到一個很常見的SQL Server問題,順利解決了.記錄一下:</p>
+<p>假設有</p>
+<p>第1台 DB IP: 111.111.111.111  使用port:1433<br>第2台 DB IP: 222.222.222.222  使用port:1433</p>
+<p>現已連接到第1台,但想直接查詢第2台DB的資料,會在查詢SQL前面加上IP.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> [<span class="number">222.222</span><span class="number">.222</span><span class="number">.222</span>].MS.dbo.Product</span><br></pre></td></tr></table></figure>
+
+<p>但Server升級後,使用上述的連接查詢會出現下面錯誤</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">訊息 <span class="number">7202</span>，層級 <span class="number">11</span>，狀態 <span class="number">2</span>，行 <span class="number">1</span></span><br><span class="line">Could <span class="keyword">not</span> find server <span class="string">&#x27;222.222.222.222&#x27;</span> <span class="keyword">in</span> sys.servers. Verify that the correct server name was specified. If necessary, <span class="keyword">execute</span> the stored <span class="keyword">procedure</span> sp_addlinkedserver <span class="keyword">to</span> <span class="keyword">add</span> the server <span class="keyword">to</span> sys.servers.</span><br></pre></td></tr></table></figure>
+
+<p>從提示的內容得知,先以下列語句查看是否已經有DBLink</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> sys.servers</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>server_id</th>
+<th>name</th>
+<th>product</th>
+<th>provider</th>
+<th>data_source</th>
+<th>location</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>111.111.111.111</td>
+<td>SQL Server</td>
+<td>SQLNCLI</td>
+<td>111.111.111.111</td>
+<td>NULL</td>
+</tr>
+</tbody></table>
+<p>執行下列語句增加DBLink</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">EXEC</span> sp_addlinkedserver <span class="variable">@server</span> <span class="operator">=</span> <span class="string">&#x27;222.222.222.222&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>再次查詢,可發現有多一筆</p>
+<table>
+<thead>
+<tr>
+<th>server_id</th>
+<th>name</th>
+<th>product</th>
+<th>provider</th>
+<th>data_source</th>
+<th>location</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>111.111.111.111</td>
+<td>SQL Server</td>
+<td>SQLNCLI</td>
+<td>111.111.111.111</td>
+<td>NULL</td>
+</tr>
+<tr>
+<td>1</td>
+<td>222.222.222.222</td>
+<td>SQL Server</td>
+<td>SQLNCLI</td>
+<td>222.222.222.222</td>
+<td>NULL</td>
+</tr>
+</tbody></table>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> sys.servers</span><br></pre></td></tr></table></figure>
+
+<p>此時就可以查詢第2台的資料</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> [<span class="number">222.222</span><span class="number">.222</span><span class="number">.222</span>].MS.dbo.Product</span><br></pre></td></tr></table></figure>
+</div></div><div class="post-main post-comment"></div></article><link rel="stylesheet" type="text/css" href="//cdn.bootcdn.net/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcdn.net/ajax/libs/lato-font/3.0.0/css/lato-font.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcdn.net/ajax/libs/fancybox/2.1.5/jquery.fancybox.css"><script src="//cdn.bootcdn.net/ajax/libs/jquery/2.0.3/jquery.min.js"></script><script src="//cdn.bootcdn.net/ajax/libs/fancybox/2.1.5/jquery.fancybox.pack.js"></script><script>$(document).ready(function() {
+  $(".fancybox").fancybox();
+});
+</script></body></html>

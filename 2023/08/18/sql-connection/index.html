@@ -1,0 +1,15 @@
+<!DOCTYPE html><html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="有個問題困擾我很久,今天無意間解決了.記錄一下:"><link rel="stylesheet" type="text/css" href="/css/normalize.css"><link rel="stylesheet" type="text/css" href="/css/highlight.css"><link rel="stylesheet" type="text/css" href="/css/noise.css"><title>sql 連線問題 | ITHelp</title><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><meta name="generator" content="Hexo 6.3.0"></head><body><article class="wrapper"><div class="post-main"><div class="nav"><nav class="container"><a class="sidebar-nav-item active" href="/">Home</a><a class="sidebar-nav-item" href="/archives">Archives</a></nav><div class="container post-meta"><div class="post-time">2023-08-18</div></div></div><div class="container post-header"><h1>sql 連線問題</h1></div><div class="container post-content"><p>有個問題困擾我很久,今天無意間解決了.記錄一下:</p>
+<p>假設有</p>
+<p>第1台 DB IP: 111.111.111.111  使用port:1433<br>第2台 DB IP: 222.222.222.222  使用port:1433</p>
+<p>SQL連線預設使用1433 port,平常登入時,都是直接輸入IP,帳號密碼,登入後就可以連線.</p>
+<p>有的時候想直接查詢正式環境的DB的資料,會在查詢SQL前面加上IP.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> [<span class="number">222.222</span><span class="number">.222</span><span class="number">.222</span>].MS.dbo.Product</span><br></pre></td></tr></table></figure>
+
+<p>但今天有第3台 DB IP: 333.333.333.333 使用port:888</p>
+<p>SQL前面加上要指定888, 因為DBeaver 連線資訊顯示都是用 <code>IP:PORT</code> 型式, 所以我一直以為要用 <code>:</code>, </p>
+<p>但怎麼都無法正常連線查詢,今天無意間發現用 <code>,</code> 就可以. 總算解決困擾我好久的問題. </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> [<span class="number">222.222</span><span class="number">.222</span><span class="number">.222</span>,<span class="number">888</span>].MS.dbo.Product</span><br></pre></td></tr></table></figure>
+</div></div><div class="post-main post-comment"></div></article><link rel="stylesheet" type="text/css" href="//cdn.bootcdn.net/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcdn.net/ajax/libs/lato-font/3.0.0/css/lato-font.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcdn.net/ajax/libs/fancybox/2.1.5/jquery.fancybox.css"><script src="//cdn.bootcdn.net/ajax/libs/jquery/2.0.3/jquery.min.js"></script><script src="//cdn.bootcdn.net/ajax/libs/fancybox/2.1.5/jquery.fancybox.pack.js"></script><script>$(document).ready(function() {
+  $(".fancybox").fancybox();
+});
+</script></body></html>

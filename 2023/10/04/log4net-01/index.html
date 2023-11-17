@@ -1,0 +1,29 @@
+<!DOCTYPE html><html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="log4net 使用與配置"><link rel="stylesheet" type="text/css" href="/css/normalize.css"><link rel="stylesheet" type="text/css" href="/css/highlight.css"><link rel="stylesheet" type="text/css" href="/css/noise.css"><title>log4net 使用與配置及不能產生Log文件 | ITHelp</title><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><meta name="generator" content="Hexo 6.3.0"></head><body><article class="wrapper"><div class="post-main"><div class="nav"><nav class="container"><a class="sidebar-nav-item active" href="/">Home</a><a class="sidebar-nav-item" href="/archives">Archives</a></nav><div class="container post-meta"><div class="post-time">2023-10-04</div></div></div><div class="container post-header"><h1>log4net 使用與配置及不能產生Log文件</h1></div><div class="container post-toc"><details class="toc"><summary class="toc-accordion">Table of Contents</summary><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8B%E8%BC%89"><span class="toc-number">1.</span> <span class="toc-text">下載</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">使用方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B2%92%E6%9C%89%E7%94%A2%E7%94%9FLog%E6%96%87%E4%BB%B6"><span class="toc-number">3.</span> <span class="toc-text">沒有產生Log文件</span></a></li></ol></details></div><div class="container post-content"><p>log4net 使用與配置</p>
+<h3 id="下載"><a href="#下載" class="headerlink" title="下載"></a>下載</h3><ul>
+<li><p><a target="_blank" rel="noopener" href="https://logging.apache.org/log4net/">Apache log4net™</a> Apache官網可下載</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.nuget.org/packages/log4net/">nuget-log4net</a> 也可以透過nuget下載</p>
+</li>
+</ul>
+<h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><p>參考 程式人生的<a target="_blank" rel="noopener" href="https://www.796t.com/content/1579330922.html">關於Log4Net的使用及配置方式</a></p>
+<h3 id="沒有產生Log文件"><a href="#沒有產生Log文件" class="headerlink" title="沒有產生Log文件"></a>沒有產生Log文件</h3><p>解決方法:</p>
+<ol>
+<li>在 <code>AssemblyInfo.cs</code> 添加一行 <code>[assembly: log4net.Config.XmlConfigurator(Watch = true)]</code></li>
+</ol>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">assembly: AssemblyVersion(<span class="string">&quot;1.0.0.0&quot;</span>)</span>]</span><br><span class="line">[<span class="meta">assembly: AssemblyFileVersion(<span class="string">&quot;1.0.0.0&quot;</span>)</span>]</span><br><span class="line"></span><br><span class="line">[<span class="meta">assembly: log4net.Config.XmlConfigurator(Watch = true)</span>]</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>或者在使用log4net的類別(namesapce上面)加上 log4net attribute 如下</li>
+</ol>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">assembly: log4net.Config.XmlConfigurator(Watch = true)</span>]</span><br><span class="line"><span class="keyword">namespace</span> <span class="title">MyTestClass</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+</div></div><div class="post-main post-comment"></div></article><link rel="stylesheet" type="text/css" href="//cdn.bootcdn.net/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcdn.net/ajax/libs/lato-font/3.0.0/css/lato-font.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcdn.net/ajax/libs/fancybox/2.1.5/jquery.fancybox.css"><script src="//cdn.bootcdn.net/ajax/libs/jquery/2.0.3/jquery.min.js"></script><script src="//cdn.bootcdn.net/ajax/libs/fancybox/2.1.5/jquery.fancybox.pack.js"></script><script>$(document).ready(function() {
+  $(".fancybox").fancybox();
+});
+</script></body></html>

@@ -1,0 +1,15 @@
+<!DOCTYPE html><html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="用 Visual Studio開發 ASP.NET Web Form時,偶爾會出現 &lt;code&gt;無法啟動IIS Express Web 伺服器&lt;/code&gt;, "><link rel="stylesheet" type="text/css" href="/css/normalize.css"><link rel="stylesheet" type="text/css" href="/css/highlight.css"><link rel="stylesheet" type="text/css" href="/css/noise.css"><title>無法啟動IIS Express Web 伺服器 | ITHelp</title><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><meta name="generator" content="Hexo 6.3.0"></head><body><article class="wrapper"><div class="post-main"><div class="nav"><nav class="container"><a class="sidebar-nav-item active" href="/">Home</a><a class="sidebar-nav-item" href="/archives">Archives</a></nav><div class="container post-meta"><div class="post-time">2023-11-21</div></div></div><div class="container post-header"><h1>無法啟動IIS Express Web 伺服器</h1></div><div class="container post-toc"><details class="toc"><summary class="toc-accordion">Table of Contents</summary><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%83%E8%80%83%E8%B3%87%E6%96%99"><span class="toc-number">1.</span> <span class="toc-text">參考資料</span></a></li></ol></details></div><div class="container post-content"><p>用 Visual Studio開發 ASP.NET Web Form時,偶爾會出現 <code>無法啟動IIS Express Web 伺服器</code>, </p>
+<p>即使重新開機, 還是沒有解決. 最後是修改 <code>Project Url</code> 的Port, 改到能正常啟動</p>
+<p>步驟如下:</p>
+<ol>
+<li><code>Solution Explorer</code> -&gt; <code>YourProject</code> -&gt; 滑鼠右鍵 <code>Properties</code> </li>
+<li><code>Web</code> -&gt; <code>Project Url</code></li>
+</ol>
+<p><img src="/pic/iis-project-url.png" alt="iis-project-url"></p>
+<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://dotblogs.com.tw/whd/2017/03/08/001714">解除「無法啟動IIS Express Web 伺服器」的問題</a></li>
+</ul>
+</div></div><div class="post-main post-comment"></div></article><link rel="stylesheet" type="text/css" href="//cdn.bootcdn.net/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcdn.net/ajax/libs/lato-font/3.0.0/css/lato-font.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcdn.net/ajax/libs/fancybox/2.1.5/jquery.fancybox.css"><script src="//cdn.bootcdn.net/ajax/libs/jquery/2.0.3/jquery.min.js"></script><script src="//cdn.bootcdn.net/ajax/libs/fancybox/2.1.5/jquery.fancybox.pack.js"></script><script>$(document).ready(function() {
+  $(".fancybox").fancybox();
+});
+</script></body></html>
